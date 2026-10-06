@@ -1,0 +1,9 @@
+{
+  "comfyui_root": "C:/ComfyUI",
+  "base_model": "C:/ComfyUI/models/diffusion_models/minimax_h3_fl2va_pruned_int8_convrot.safetensors",
+  "dmad_lora": "C:/ComfyUI/models/loras/minimax_h3_DMAD_4step_full_lora_avg_rank_39_bf16.safetensors",
+  "output_directory": "models",
+  "fusion_manifest": null,
+  "model_roots": [],
+  "gpu": 0
+}

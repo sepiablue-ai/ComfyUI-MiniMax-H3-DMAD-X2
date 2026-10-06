@@ -1,0 +1,60 @@
+{
+  "name": "MiniMax H3 DMAD 4-NFE INT8 ConvRot fusion and X2 streaming",
+  "lora": {
+    "bytes": 366647000,
+    "sha256": "ddfdd94f4c9a0f32bf3649bb8e98ca20db572e4db6bcd9cca546a5b33ea32d11",
+    "strength": 1.0,
+    "conversion": "Kijai average-rank-39 ComfyUI conversion; ranks vary by module"
+  },
+  "comfyui_commit": "1568e6cfd04586a4b3c4e1817ea7dde09b1bf9e7",
+  "x2_stream_commit": "eb148a3d0f91a273668bbe027bfcbafb85f2c5e8",
+  "comfyui_source_sha256": {
+    "comfy/lora.py": "fce6903ca8150611b3f6477c3772bfef0662a2b01747a579ff56b415a44c29bc",
+    "comfy/weight_adapter/lora.py": "5e30c8b8a22be6459883cb5d758fa76f725cc4688d4048200145b885567c4cec",
+    "comfy/model_patcher.py": "fc43f038835aeded2e64a0490f9d37795fb9d3c9490d9210ba11f1201aec4fd8",
+    "comfy/ops.py": "306361caadad363c58cef954d2230b1c2b3f5f7bbd1f3b723377d51039bd467a",
+    "comfy/utils.py": "f5c3add7b7526877b3d828e690c28404cf03c13437af132d547f3d70fdb12e2b",
+    "comfy/quant_ops.py": "bdae24289128e12b928a6d12dccc0a63b61c682cf6544809dd3e470fc3537f40",
+    "comfy/k_diffusion/sampling.py": "a7f22bd23cf8da6814c0adf0328704b2946370f09939bb364c2523dc1fcc902f",
+    "comfy/model_sampling.py": "176eeaa45b871fe96fa244961e24ba1f02c1654758b3de37966974ce6850bff7"
+  },
+  "int8_source_sha256": "307a4133908c07b4ffa04d3cb94991140afcef9b66da126809620f6184549614",
+  "sources": {
+    "dmad": "https://github.com/Yzmblog/DMAD",
+    "base": "https://huggingface.co/Comfy-Org/MiniMax-H3/tree/main/diffusion_models",
+    "lora": "https://huggingface.co/Kijai/MiniMax-H3-experimental/tree/main/loras",
+    "x2_stream": "https://github.com/sepiablue-ai/ComfyUI-H3-X2-Stream",
+    "x2_vae": "https://huggingface.co/speach1sdef178/MiniMax-H3-X2-Detail-VAE"
+  },
+  "method": "Native ComfyUI CUDA BF16 LoRA fusion with module-path seeds and INT8 ConvRot requantization; BF16 token refiner retained",
+  "modules": 208,
+  "int8_modules": 200,
+  "bf16_modules": 8,
+  "sampling": {
+    "steps": 4,
+    "sampler": "lcm",
+    "sigmas": [
+      1,
+      0.9729729890823364,
+      0.9230769276618958,
+      0.800000011920929,
+      0
+    ],
+    "shift_video": 12,
+    "shift_audio": 2,
+    "sla_keep_percent": 5,
+    "ffn_chunks": 8,
+    "frames": 124,
+    "fps": 24
+  },
+  "scope": "FL2VA base only; two first-frame I2VA examples; both-endpoint conditioning not tested",
+  "rebuild_limit": "Reference hashes were reproduced on RTX 4070 with the recorded versions. Other GPUs and implementations are not guaranteed byte-identical. Each output is checked against its own fusion manifest.",
+  "base": {
+    "bytes": 20970379616,
+    "sha256": "e889202c41dafb67b10d67b97f0d8541508036a6090af23425a5c2615d03c47a"
+  },
+  "reference_output": {
+    "bytes": 20970380008,
+    "sha256": "1992b560ef87fccd9fc46b8df6875ee2262e3cfc81a18c9004f5a204d92f54af"
+  }
+}

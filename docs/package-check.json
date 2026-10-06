@@ -1,0 +1,68 @@
+{
+  "date_jst": "2026-10-06",
+  "scope": "FL2VA base only, first-frame I2VA examples",
+  "checks": [
+    {
+      "name": "syntax_and_json",
+      "passed": true
+    },
+    {
+      "name": "two_fl2va_gui_api_pairs_and_two_assets",
+      "passed": true,
+      "workflows": [
+        "fl2va_case01_sla5.json",
+        "fl2va_case02_sla5.json"
+      ]
+    },
+    {
+      "name": "validated_fusion_functions_unchanged",
+      "passed": true
+    },
+    {
+      "name": "recipe_and_validation_records_are_fl2va_only",
+      "passed": true
+    },
+    {
+      "name": "unsupported_partition_configs_rejected_and_legacy_fl2va_accepted",
+      "passed": true
+    },
+    {
+      "name": "unsupported_partition_rejected_before_mutation",
+      "passed": true
+    },
+    {
+      "name": "wrong_base_hash_rejected",
+      "passed": true,
+      "kind": "isolated source-hash gate test"
+    },
+    {
+      "name": "setup_reuses_model_or_dispatches_one_fl2va_fusion",
+      "passed": true,
+      "kind": "isolated orchestration test"
+    },
+    {
+      "name": "existing_fl2va_sources_and_fused_model_verified",
+      "passed": true,
+      "writes": false,
+      "output_sha256": "1992b560ef87fccd9fc46b8df6875ee2262e3cfc81a18c9004f5a204d92f54af",
+      "output_bytes": 20970380008
+    },
+    {
+      "name": "local_document_links",
+      "passed": true
+    },
+    {
+      "name": "cli_help",
+      "passed": true
+    },
+    {
+      "name": "windows_setup_rejects_unsupported_partition_before_access",
+      "passed": true,
+      "writes": false
+    }
+  ],
+  "end_to_end_setup_generation": "subsequently passed; see fresh-install.json",
+  "historical_generation_record": "validation.json",
+  "phase": "structural/configuration checks before fresh install",
+  "fresh_install_record": "fresh-install.json"
+}

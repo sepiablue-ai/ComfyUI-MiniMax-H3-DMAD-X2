@@ -1,0 +1,37 @@
+{
+  "date_jst": "2026-10-04",
+  "runs": [
+    {
+      "case": "fl2va_case01_sla5",
+      "server_execution_sec": 67.478,
+      "sampler_node_wall_sec_includes_loading": 40.95611339999596,
+      "gpu_observed_max_mib": 11487,
+      "system_ram_observed_max_gib": 20.272022247314453,
+      "system_available_min_gib": 27.544921875,
+      "system_pageout_max_pages_sec": 0.0,
+      "full_av_decode_pass": true,
+      "video_sha256": "652a23a14c9c84dfdbabd5a3f4e8e0a887550a81f25303826a777e1697e9df0b"
+    },
+    {
+      "case": "fl2va_case02_sla5",
+      "server_execution_sec": 60.576,
+      "sampler_node_wall_sec_includes_loading": 39.08688880000409,
+      "gpu_observed_max_mib": 11459,
+      "system_ram_observed_max_gib": 20.245616912841797,
+      "system_available_min_gib": 27.5712890625,
+      "system_pageout_max_pages_sec": 0.0,
+      "full_av_decode_pass": true,
+      "video_sha256": "9b5b665f68043bcdfc9f50cbbd2f48b975aa5768934221283acfca64aff4c48e"
+    }
+  ],
+  "fusion": {
+    "fl2va": {
+      "sha256": "1992b560ef87fccd9fc46b8df6875ee2262e3cfc81a18c9004f5a204d92f54af",
+      "bytes": 20970380008,
+      "full_file_equal_to_original": true,
+      "conversion_sec_excludes_initial_hash": 766.223659400006,
+      "cuda_allocated_peak_gib": 1.3009033203125
+    }
+  },
+  "scope": "FL2VA base only, first-frame I2VA"
+}

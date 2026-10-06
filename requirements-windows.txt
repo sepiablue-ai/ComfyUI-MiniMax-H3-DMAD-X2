@@ -1,0 +1,7 @@
+# Install into the selected ComfyUI Python; CUDA PyTorch is a separate prerequisite.
+triton-windows==3.8.0.post28
+av==18.1.0
+safetensors==0.8.0
+numpy==2.5.2
+transformers==5.17.0
+websocket-client==1.9.2
