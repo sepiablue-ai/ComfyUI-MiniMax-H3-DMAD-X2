@@ -2,7 +2,27 @@
 
 [日本語](README_ja.md) | English
 
-Generate MiniMax H3 first-frame video and audio using the **FL2VA base**, a fused **DMAD four-step** model, **SLA keep 5%**, and **X2 VAE INT8 streaming**. The two examples generate at **544 × 960** and save **1088 × 1920**, **124 frames at 24 fps**.
+**A ComfyUI package that builds a four-step model on your own PC from the official FL2VA base and the DMAD LoRA. On an RTX 4070 12GB it generates 5-second 1088 × 1920 video with audio in about one minute.** It is an alternative four-step route that does not depend on a pre-fused third-party model.
+
+| FL2VA, 544 × 960 sampling → 1088 × 1920 output, 124 frames | Case 01 | Case 02 |
+|---|---:|---:|
+| MATLOW fused model ([ComfyUI-H3-X2-Stream](https://github.com/sepiablue-ai/ComfyUI-H3-X2-Stream) example) | 62.6 s | 58.7 s |
+| **This repo: DMAD fused model** | **60.5 s** | **57.0 s** |
+
+Measured on [Sayaka Benchmark](https://sayakabenchmark.pages.dev/), FL2VA tab (one run each). The MATLOW row is FL2VA [022](https://sayakabenchmark.pages.dev/benchmarks/fl2va/022-matlow-fused4-sla5-x2vae-int8-stream/workflow.json) (2026-10-02) and this repo is FL2VA [014](https://sayakabenchmark.pages.dev/benchmarks/fl2va/014-dmad-fused4-sla5-x2vae-int8-stream/workflow.json) (2026-10-07), measured on different days. Separate ComfyUI 0.38.0 measurement sets (medians of three runs) gave 60.7 s and 61.2 s, so **the speed is about the same** (see [Validation and timing](#validation-and-timing)).
+
+**Terms**
+
+| Term | Meaning |
+|---|---|
+| DMAD | A distillation method that lets audio-video models generate in few steps. This repo uses the average-rank-39 LoRA [converted by Kijai](https://huggingface.co/Kijai/MiniMax-H3-experimental/tree/main/loras) |
+| Fusing | Baking the LoRA into the model weights and re-quantizing to INT8 as one model file; setup does this once on the GPU |
+| SLA keep 5% | ComfyUI's native sparse attention, computing only the important part (about 5%) |
+| X2 VAE INT8 streaming | Decodes the 544 × 960 latent to 1088 × 1920 while saving with NVENC in parallel |
+
+> Author: Kamimoto (かみもと) | Quick results on **[X (@sep_is_heim)](https://x.com/sep_is_heim)**, write-ups (Japanese) on **[note](https://note.com/sepiablue)** ([article index](https://note.com/sepiablue/n/n8e612c619a3e)).
+
+Generate MiniMax H3 first-frame video and audio. The two examples generate at **544 × 960** and save **1088 × 1920**, **124 frames at 24 fps**.
 
 This package includes installation, GPU model fusion and ready-to-load workflows. Keep the repository outside `ComfyUI/custom_nodes`. Setup installs the separate [ComfyUI-H3-X2-Stream](https://github.com/sepiablue-ai/ComfyUI-H3-X2-Stream) dependency into the selected ComfyUI. Its configuration and directory layout follow [ComfyUI-MiniMax-H3-PDMD-X2](https://github.com/sepiablue-ai/ComfyUI-MiniMax-H3-PDMD-X2).
 
@@ -135,6 +155,21 @@ The latest classroom whole-execution medians were **60.667 seconds (1m 00.667s)*
 - Insufficient disk space: one new fused checkpoint needs 30 GB free; verified reuse avoids this allocation.
 - Input/config conflict or interrupted fusion: inspect the named file before retrying. Existing different files and reports are not overwritten.
 - Audio or visual quality: review the generated clips. Technical decode checks and upstream claims do not establish this combination's perceptual quality.
+
+## Author and related repositories
+
+I'm Kamimoto (かみもと). I measure and publish MiniMax H3 and ComfyUI speed-ups and VRAM reductions on an RTX 4070 12 GB.
+
+- X: [@sep_is_heim](https://x.com/sep_is_heim) — quick results with step counts, seconds and speed-ups
+- note: [かみもと｜ローカルAI生成](https://note.com/sepiablue) — setup guides and measured write-ups in Japanese ([article index](https://note.com/sepiablue/n/n8e612c619a3e))
+- [Sayaka Benchmark](https://sayakabenchmark.pages.dev/) — speed and quality comparison of H3 workflows
+
+| Repository | What it does |
+|---|---|
+| [ComfyUI-H3-X2-Stream](https://github.com/sepiablue-ai/ComfyUI-H3-X2-Stream) | INT8 X2 VAE and asynchronous NVENC saving; 5 s 1088×1920 video with audio in about 60 s |
+| [ComfyUI-MiniMax-H3-PDMD-X2](https://github.com/sepiablue-ai/ComfyUI-MiniMax-H3-PDMD-X2) | PDMD 2-step fused model; 5 s 1088×1920 video in about 44–50 s |
+| [ComfyUI-H3-LBH-X2-Stream](https://github.com/sepiablue-ai/ComfyUI-H3-LBH-X2-Stream) | 3 low-resolution steps + 1 high-resolution step; about 25% faster for 14 s video |
+| [ComfyUI-H3-AudioFirst-X2-Stream](https://github.com/sepiablue-ai/ComfyUI-H3-AudioFirst-X2-Stream) | Audio-first two-pass generation that reduces the metallic voice |
 
 ## License
 

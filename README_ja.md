@@ -2,7 +2,27 @@
 
 日本語 | [English](README.md)
 
-**FL2VAベースのDMAD 4step融合モデル、SLA keep 5%、X2 VAE INT8 streaming**を組み合わせ、ComfyUIで先頭画像から映像と音声を生成するパッケージです。2つの例は544×960で生成し、1088×1920で保存します。124フレーム、24fpsです。
+**公式のFL2VAモデルとDMAD LoRAから、自分のPCで4step融合モデルを作って使うComfyUIパッケージです。RTX 4070 12GBで、1088×1920・音声付きの5秒動画を約1分で生成します。** 配布済みの融合モデルに頼らない、もう1つの4step構成です。
+
+| FL2VA・544×960生成 → 1088×1920出力・124フレーム | Case 01 | Case 02 |
+|---|---:|---:|
+| MATLOW融合版（[ComfyUI-H3-X2-Stream](https://github.com/sepiablue-ai/ComfyUI-H3-X2-Stream)の例） | 62.6秒 | 58.7秒 |
+| **本repo：DMAD融合版** | **60.5秒** | **57.0秒** |
+
+[さやかベンチマーク](https://sayakabenchmark.pages.dev/)のFL2VAタブの実測です（各1回）。MATLOW融合版はFL2VA [022](https://sayakabenchmark.pages.dev/benchmarks/fl2va/022-matlow-fused4-sla5-x2vae-int8-stream/workflow.json)（2026-10-02）、本repoはFL2VA [014](https://sayakabenchmark.pages.dev/benchmarks/fl2va/014-dmad-fused4-sla5-x2vae-int8-stream/workflow.json)（2026-10-07）で、計測日が異なります。ComfyUI 0.38.0での別の計測セット（各3回の中央値）でも60.7秒と61.2秒で、**速度はほぼ同じ**です（[検証と生成時間](#検証と生成時間)）。
+
+**用語**
+
+| 用語 | 意味 |
+|---|---|
+| DMAD | 音声付き動画モデルを少ないstepで生成できるようにする蒸留手法。本repoは[Kijai変換](https://huggingface.co/Kijai/MiniMax-H3-experimental/tree/main/loras)の平均rank39 LoRAを使用 |
+| 融合（fuse） | LoRAをモデルの重みに焼き込み、INT8に戻して1つのモデルファイルにすること。setupがGPUで一度だけ行う |
+| SLA keep 5% | ComfyUIネイティブのスパースattention。重要な部分だけ（約5%）を計算する |
+| X2 VAE INT8 streaming | 544×960のlatentを1088×1920に復号しながら、NVENCで動画保存を並行する |
+
+> 作者：かみもと（Kamimoto）｜検証結果の速報は **[X（@sep_is_heim）](https://x.com/sep_is_heim)**、解説記事は **[note](https://note.com/sepiablue)**（[記事INDEX](https://note.com/sepiablue/n/n8e612c619a3e)）で公開しています。
+
+ComfyUIで先頭画像から映像と音声を生成します。2つの例は544×960で生成し、1088×1920で保存します。124フレーム、24fpsです。
 
 モデル融合ツール、導入処理、GUI/APIワークフローを同梱します。[ComfyUI-MiniMax-H3-PDMD-X2](https://github.com/sepiablue-ai/ComfyUI-MiniMax-H3-PDMD-X2)と同じく、設定ファイルを用意して`setup.bat`から導入・モデル準備を行う構成です。repo自体は`ComfyUI/custom_nodes`の外に置いてください。追加カスタムノードの[ComfyUI-H3-X2-Stream](https://github.com/sepiablue-ai/ComfyUI-H3-X2-Stream)は別途、選択したComfyUIへ導入します。
 
@@ -135,6 +155,21 @@ GUIにドラッグしてモデル選択を確認してください。API版は`w
 - SSD不足：新規融合1本は空き30GBを確認します。検証済みモデルの再利用なら追加作成しません。
 - 入力・設定の競合や中断：表示されたファイルを確認してから再試行します。異なる既存ファイルや記録は上書きしません。
 - 音声・映像品質：生成物を視聴してください。デコード検査や公式の評価値だけでは、この組み合わせの品質は判断できません。
+
+## 作者・関連リポジトリ
+
+かみもと（Kamimoto）です。RTX 4070 12GBで、MiniMax H3とComfyUIの高速化・省VRAM化を実測しながら公開しています。
+
+- X：[@sep_is_heim](https://x.com/sep_is_heim) — step数・秒数・短縮率などの検証速報
+- note：[かみもと｜ローカルAI生成](https://note.com/sepiablue) — 導入方法と実測の解説記事（[記事INDEX](https://note.com/sepiablue/n/n8e612c619a3e)）
+- [さやかベンチマーク](https://sayakabenchmark.pages.dev/) — H3ワークフローの速度・画質比較
+
+| リポジトリ | 内容 |
+|---|---|
+| [ComfyUI-H3-X2-Stream](https://github.com/sepiablue-ai/ComfyUI-H3-X2-Stream) | X2 VAEのINT8化と非同期NVENC保存。1088×1920の音声付き5秒動画を約60秒で生成 |
+| [ComfyUI-MiniMax-H3-PDMD-X2](https://github.com/sepiablue-ai/ComfyUI-MiniMax-H3-PDMD-X2) | PDMD 2step融合モデル。1088×1920の5秒動画を約44〜50秒 |
+| [ComfyUI-H3-LBH-X2-Stream](https://github.com/sepiablue-ai/ComfyUI-H3-LBH-X2-Stream) | 低解像度3step＋高解像度1step。14秒動画で約25%短縮 |
+| [ComfyUI-H3-AudioFirst-X2-Stream](https://github.com/sepiablue-ai/ComfyUI-H3-AudioFirst-X2-Stream) | 音声を先に作って固定し、金属的な響きを抑える2パス生成 |
 
 ## ライセンス
 
